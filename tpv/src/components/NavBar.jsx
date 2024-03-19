@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
 export default function NavBar() {
 
@@ -37,6 +38,7 @@ export default function NavBar() {
     <Nav animate={animate} transition={transition}>
         <Link to="/products"><IconWrapper><NavIcon><LinkIcon><ProductIcon /></LinkIcon></NavIcon><NavText>PRODUCTOS</NavText></IconWrapper></Link>
         <Link to="/families"><IconWrapper><NavIcon><LinkIcon><FamilyIcon /></LinkIcon></NavIcon><NavText>FAMILIAS</NavText></IconWrapper></Link>
+        <Link to="/cierres"><IconWrapper><NavIcon><LinkIcon><RegisterIcon /></LinkIcon></NavIcon><NavText>CIERRES</NavText></IconWrapper></Link>
     </Nav> 
     {icon}
     </>
@@ -54,6 +56,12 @@ const ProductIcon = styled(AddHomeIcon)`
 `;
 
 const FamilyIcon = styled(GroupAddIcon)`
+    &&&{
+        color: white;
+    }
+`;
+
+const RegisterIcon = styled(PointOfSaleIcon)`
     &&&{
         color: white;
     }

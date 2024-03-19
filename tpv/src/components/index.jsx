@@ -13,17 +13,144 @@ import wood from "../images/wood.jpg"
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import EuroIcon from '@mui/icons-material/Euro';
 import ClearIcon from '@mui/icons-material/Clear';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
-export function ClearClart () {
-  setCart({
-    producto: "",
-    precio: "",
-    cantidad: "",
-    imagen: "",
-    familia: "",
-    id: ""
-  })
+//**************CIERRES *********** */
+
+export const CierreCaja = styled(ClosedCaptionIcon)`
+  &&&{
+    color: white;
+  }
+`;
+
+export const SubTotal = styled(EventNoteIcon)`
+  &&&{
+    color: white;
+  }
+`;
+
+export const CierresHeader = styled.div`
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5vh;
+`;
+
+export const DateTimeDiv = styled.div`
+  width: 65%;
+  height:40vh;
+  display: flex;
+`;
+
+export const TableWrapper = styled.div`
+  width: 80%;
+  height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+`;
+
+export const ReportDisplay = styled.div`
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ReportText = styled.div`
+  width: 33%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 24px;
+`;
+
+
+export const PickerTitle = styled.div`
+  width: 100%;
+  height: 15%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 16px;
+`;
+
+export const PickerWrapper = styled.div`
+  width: 100%;
+  height: 30%;
+  display: grid;
+  place-items: center;
+  color: white;
+  padding: 10px 10px;
+`;
+
+export const Card = styled(CreditCardIcon)`
+&&&{
+    color: white;
 }
+`;
+
+export const BillText = styled.div`
+width: 100%;
+height: 30%;
+display: grid;
+place-items: center;
+color: white;
+font-size: 22px;
+transform: translateY(20px);
+`;
+
+export const BigButton = styled(IconButton)`
+&&&{
+    transform: scale(3);
+    border: 0.5px solid #a2a2a2;
+}
+`;
+
+export const BillIcon = styled.div`
+width: 100%;
+height: 70%;
+display: grid;
+place-items: center;
+`;
+
+export const BillColumn = styled.div`
+width: 30%;
+height: 100%;
+`;
+
+export const BillRow = styled.div`
+    width: 90%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 20px;
+`;
+
+
+export const BillButtons = styled.div`
+width: 100%;
+height: 80px;
+display: flex;
+align-items: center;
+justify-content: space-around;
+margin-bottom: 20px;
+`;
+
+export const Billpop = styled.div`
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
 
 
 // ********* HOME ***********
@@ -53,6 +180,7 @@ export const IconRowText = styled.div`
   height: 30%;
   display: grid;
   place-items: center;
+  color: white;
 `;
 
 export const IconRowRow = styled.div`
@@ -75,6 +203,8 @@ export const IconRowColumnTwo = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Euro = styled(EuroIcon)`
@@ -102,6 +232,8 @@ export const BigRow = styled.div`
   width: 100%;
   height: 150px;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 export const BigRowTwo = styled.div`
@@ -347,6 +479,14 @@ export const AddProduct = styled(IconButton)`
     }
 `;
 
+export const ReturnIcon = styled(IconButton)`
+    &&&{
+        transform: scale(1.4);
+        cursor: pointer;
+        outline: none;
+    }
+`;
+
 export const Left = styled(ChevronLeftIcon)`
 &&&{
     color: white;
@@ -493,6 +633,14 @@ export const Popover = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+`;
+
+export const PopoverTwo = styled.div`
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const Header = styled.div`
@@ -793,9 +941,30 @@ display: flex;
 flex-direction: column;
 `;
 
+export const CloseIconWrapper = styled.div`
+width: 15%;
+height: 100%;
+display: flex;
+flex-direction: column;
+`;
+
+export const CloseIconLineWrapper = styled.div`
+width: 65%;
+height: 100%;
+display: flex;
+align-items: center;
+`;
+
 export const PageIcon = styled.div`
 width: 100%;
 height: 90%;
+display: grid;
+place-items: center;
+`;
+
+export const ClosePageIcon = styled.div`
+width: 100%;
+height: 70%;
 display: grid;
 place-items: center;
 `;
@@ -824,5 +993,22 @@ height: 80vh;
 padding: 20px;
 display: flex;
 align-items: center;
+`;
+
+export const Text = styled.div`
+width: 100%;
+height: 10%;
+color: white;
+font-size: 20px;
+text-align: center;
+transform: translateY(-10px);
+`;
+
+export const CloseText = styled.div`
+width: 100%;
+height: 30%;
+color: white;
+font-size: 18px;
+text-align: center;
 `;
 

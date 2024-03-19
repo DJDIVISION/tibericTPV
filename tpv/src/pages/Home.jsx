@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useMemo } from "react";
-import axios from "axios";
 import '../App.css'
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../redux/actions/productsActions";
@@ -7,13 +6,18 @@ import { TableState } from "../context/TableContext.jsx";
 import { CartContext, ResetProductContext, TotalOrderContext } from "../context/contexts.jsx"
 import styled from 'styled-components'
 import {motion} from "framer-motion"
+import { Button } from "@mui/material";
+import { message } from "antd";
 import NavBar from '../components/NavBar'
 import {animationTwo, transitionTwo} from '../animations'
 import { HomeSection, LeftColumn, BigHalf, RightColumn, HalfColumn, BillDisplay, BillWrapper, BillDisplaySmall,
-  BillDisplayBig, BillPrice } from '../components'
+  BillDisplayBig, BillPrice, BillButtons } from '../components'
 import Calculator from '../components/calculator/Calculator'
 import ProductsFilter from '../components/Products/ProductsFilter.jsx';
 import BarMenu from "../components/foldingMenus/BarMenu.jsx";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import SendIcon from '@mui/icons-material/Send';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { db } from "../components/firebase.jsx"
 import { firebaseApp } from '../components/firebase.jsx';
 import {  getFirestore, setDoc,  updateDoc, doc } from "firebase/firestore";
@@ -21,6 +25,7 @@ import firebase from 'firebase/compat/app';
 import ProductsCart from "../components/Products/ProductsCart.jsx";
 import SetActionMenu from "../components/foldingMenus/SetActionMenu.jsx";
 import AddProductsMenu from "../components/foldingMenus/AddProductsMenu.jsx";
+import BillMenu from "../components/foldingMenus/BillMenu.jsx";
 
 
 
@@ -30,10 +35,12 @@ export default function Home() {
   const [roomMenuOpen, setRoomMenuOpen] = useState(false);
   const [terraceMenuOpen, setTerraceMenuOpen] = useState(false);
   const [productsMenu, setProductsMenu] = useState(false);
+  const [billMenu, setBillMenu] = useState(false);
   const [addProductsMenu, setAddProductsMenu] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [actionMenu, setActionMenu] = useState(false);
   const {selectedTable, setSelectedTable} = TableState();
+  const {cartModified, setCartModified} = TableState();
   const {tableEmpty, setTableEmpty} = TableState();
   const products = useSelector((state) => state.allProducts.products);
   const dispatch = useDispatch();
@@ -64,6 +71,22 @@ export default function Home() {
 
   console.log(cart);
 
+  const sendCart = async (productProps) => {
+    console.log(cart);
+    await setDoc(doc(db, "cuentas", selectedTable), {
+        ...cart
+      });
+    message.success("Mesa guardada con éxito!");
+    setCart(cart.filter(product => product.id === selectedTable));
+    setShowOverlay(!showOverlay);
+    setProductsMenu(!productsMenu);
+    setTotalOrder(0);
+    setSelectedTable("");
+    setCartModified(false);
+    setActionMenu(false);
+    setProductsMenu(false);
+}
+
 
   return (
     <motion.div initial="out" animate="in" variants={animationTwo} transition={transitionTwo}>
@@ -83,7 +106,16 @@ export default function Home() {
             <BillWrapper id="billwrapper">
               <ProductsCart />
             </BillWrapper>
-            <BillPrice>{totalOrder}€</BillPrice>
+            <BillPrice>TOTAL: {totalOrder}€</BillPrice>
+            
+                {/* <Button onClick={() => añadir()} size="small" color="success" variant="contained" startIcon={<AddShoppingCartIcon />}>AÑADIR</Button> */}
+                {cartModified && (
+                  <BillButtons>
+                  <Button onClick={() => sendCart()} size="small" color="success" variant="contained" startIcon={<SendIcon />}>ENVIAR</Button>
+                  <Button /* onClick={() => cobrar()} */ size="small" color="success" variant="contained" startIcon={<PointOfSaleIcon />}>COBRAR</Button>
+                  </BillButtons>
+                )}
+            
           </BigHalf>
         </LeftColumn>
         <RightColumn>
@@ -98,10 +130,15 @@ export default function Home() {
         <ProductsFilter setProductsMenu={setProductsMenu} productsMenu={productsMenu} showOverlay={showOverlay} setShowOverlay={setShowOverlay}/>
         )}
         {actionMenu && (
-          <SetActionMenu actionMenu={actionMenu} setActionMenu={setActionMenu}  setProductsMenu={setProductsMenu} productsMenu={productsMenu} barMenuOpen={barMenuOpen} setBarMenuOpen={setBarMenuOpen}/>
+          <SetActionMenu actionMenu={actionMenu} setActionMenu={setActionMenu} billMenu={billMenu} setBillMenu={setBillMenu} setProductsMenu={setProductsMenu} productsMenu={productsMenu} barMenuOpen={barMenuOpen} setBarMenuOpen={setBarMenuOpen}/>
+        )}
+        {billMenu && (
+          <BillMenu billMenu={billMenu} setBillMenu={setBillMenu} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu}/>
         )}
     </motion.div>
   )
 }
 
-
+const BillButton = styled(Button)`
+  background: blue;
+`;

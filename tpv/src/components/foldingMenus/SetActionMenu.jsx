@@ -5,14 +5,12 @@ import {Popover, Header, BigRow, MenuTitle, IconRow, Cross, Check, item, EmptyTa
   IconRowText, IconRowRow, NonEmptyTableTitle, MenuTitleTwo, Euro, Add, WhiteCross, IconRowColumnTwo, BigRowTwo} from "../index"
 import { IconButton } from '@mui/material'
 import { TableState } from '../../context/TableContext.jsx';
-import { useDispatch, useSelector } from "react-redux";
 import { CartContext, TotalOrderContext } from '../../context/contexts.jsx'
 
-const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMenu, billMenuOpen, setBillMenuOpen, barMenuOpen, setBarMenuOpen}) => {
+const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMenu, billMenu, setBillMenu, barMenuOpen, setBarMenuOpen}) => {
 
     const {selectedTable, setSelectedTable} = TableState();
     const {tableEmpty, setTableEmpty} = TableState(); 
-    const dispatch = useDispatch();
     const {cart, setCart} = useContext(CartContext);
     const {totalOrder, setTotalOrder} = useContext(TotalOrderContext)
 
@@ -33,7 +31,7 @@ const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMen
     }
 
     const openBillMenu = () => {
-      setBillMenuOpen(!billMenuOpen);
+      setBillMenu(!billMenu);
     }
 
   return (
@@ -58,12 +56,12 @@ const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMen
                             </IconRowRow>
                             <IconRowText><MenuTitleTwo><h3>AÑADIR PRODUCTOS</h3></MenuTitleTwo></IconRowText>
                           </IconRowColumn>
-                          <IconRowColumn>
+                          {totalOrder !== 0 ? <IconRowColumn>
                             <IconRowRow>
                             <motion.div whileTap={{scale: 0.95}}><Button onClick={openBillMenu}><Euro /></Button></motion.div>
                             </IconRowRow>
                             <IconRowText><MenuTitleTwo><h3>COBRAR</h3></MenuTitleTwo></IconRowText>
-                          </IconRowColumn>
+                          </IconRowColumn> : <></>}
                         </BigRow>
                   </Popover>
               </motion.div>

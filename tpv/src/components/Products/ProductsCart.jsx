@@ -10,20 +10,24 @@ import { message } from 'antd';
 import axios from "axios"
 import { sleep } from "./helpers.js"
 import { useDispatch, useSelector } from "react-redux";
+import { setDoc, doc, collection } from "firebase/firestore";
+import { db } from "../../components/firebase.jsx";
 
 export default function ProductsCart() {
 
     const {setProductToReset} = useContext(ResetProductContext)
     const {cart, setCart} = useContext(CartContext)
+    const {cartModified, setCartModified} = TableState();
     const {selectedTable, setSelectedTable} = TableState();
     const [openDelete, setOpenDelete] = useState(false);
     //let [cartHasBeenModified, setCartHasBeenModified] = useState(false);
     const dispatch = useDispatch();
     
     
-    function removeProductInCart(productParam) {
-        setCart(cart.filter(product => product.id !== productParam.id))
-        setProductToReset(productParam)
+    async function removeProductInCart(productParam) {
+        setCart(Object.values(cart).filter(product => product.id !== productParam.id));
+        message.success("Producto eliminado de la cuenta!");
+        setCartModified(true);
      }
 
     function setClick (productParam) {
@@ -32,7 +36,9 @@ export default function ProductsCart() {
         setOpenDelete(!openDelete); */
     }
 
-    console.log(cart);
+    useEffect(() => {
+        console.log(cart);
+    }, [cart]);
 
   return (
     <Section>
@@ -50,13 +56,6 @@ export default function ProductsCart() {
     </Section>
   )
 }
-
-const Overlay = styled.div`
-    width: 20%;
-    height: 100%;
-    background: red;
-    transition: width 1s;
-`;
 
 const Section = styled.div`
     width: 100%;

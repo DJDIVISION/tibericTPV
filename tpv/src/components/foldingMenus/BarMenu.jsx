@@ -10,11 +10,7 @@ import { db, v9db } from "../../components/firebase.jsx";
 import { firebaseApp } from '../../components/firebase.jsx';
 import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
-import { setProducts } from "../../redux/actions/productsActions";
-import { useDispatch, useSelector } from "react-redux";
-import axios, { all } from "axios"
-import SetActionMenu from './SetActionMenu.jsx';
-import { CartContext, ResetProductContext } from "../../context/contexts.jsx"
+import { CartContext } from "../../context/contexts.jsx"
 
 
 const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu}) => {
@@ -25,7 +21,6 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     const [billMenuOpen, setBillMenuOpen] = useState(false);
     const {tableEmpty, setTableEmpty} = TableState(); 
     const [barData, setBarData] = useState([]);
-    const dispatch = useDispatch();
     const {cart, setCart} = useContext(CartContext);
     
     console.log(cart);

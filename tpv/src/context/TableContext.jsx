@@ -10,19 +10,12 @@ const TableContext = ({children}) => {
     const [activeFamily, setActiveFamily] = useState("BEBIDAS");
     const [selectedTable, setSelectedTable] = useState("");
     const [totalOrder, setTotalOrder] = useState(0);
-    const [cart, setCart] = useState({
-        producto: "",
-        precio: "",
-        cantidad: "",
-        imagen: "",
-        familia: "",
-        id: ""
-    });
+    const [cartModified, setCartModified] = useState(false);
     
     
     return(
         <Table.Provider value = {{ setTableEmpty, tableEmpty, selectedTable, setSelectedTable, activeFamily, setActiveFamily,
-          setTotalOrder, totalOrder, setCart, cart}}>
+          setTotalOrder, totalOrder, setCartModified, cartModified}}>
             {children}
         </Table.Provider>
     )

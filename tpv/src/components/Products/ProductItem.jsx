@@ -24,6 +24,7 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
     const {productToReset, setProductToReset} = useContext(ResetProductContext);
     const [readyToSend, setReadytoSend] = useState(false);
     const {selectedTable, setSelectedTable} = TableState();
+    const {cartModified, setCartModified} = TableState();
 
     const animation = useAnimation();
 
@@ -88,12 +89,7 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
     const ClosePop = () => {
         setCart(cart.filter(product => product.id !== productProps.id))
         setShowOverlay(!showOverlay); 
-        //setCart(cart.filter(product => product.id !== productProps.id))
-        /* setSelectedTable("");
-        setActionMenu(false);
-        setBarMenuOpen(false);
-        setProductsMenu(false);
-        setTableEmpty(false); */
+        setCartModified(false);
     }
 
     const sendCart = async (productProps) => {
@@ -102,21 +98,17 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
             ...cart
           });
         message.success("Mesa guardada con éxito!");
-        setCart({producto: "",
-        precio: "",
-        cantidad: "",
-        imagen: "",
-        familia: "",
-        id: ""})
+        setCart(cart.filter(product => product.id === selectedTable));
         setShowOverlay(!showOverlay);
         setProductsMenu(!productsMenu);
         setTotalOrder(0);
         setSelectedTable("");
-        
+        setCartModified(false);
     }
 
     const addMore = () => {
         setShowOverlay(!showOverlay);
+        setCartModified(true);
     }
 
   return (

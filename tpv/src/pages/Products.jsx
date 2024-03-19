@@ -22,7 +22,7 @@ import { getStorage, ref } from "firebase/storage";
 import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 import { Section, PageHeader, AddProduct, PageIconWrapper, PageIcon, PageTitle, PageTable, IconLine, PageTimes,
-item } from '../components/index.jsx';
+item, Text } from '../components/index.jsx';
 
 const Products = () => {
 
@@ -164,19 +164,12 @@ const Products = () => {
         imagen: imagenToSend,
         id: id
       });
-      /* await addDoc(prodDb, {producto: nombre, precio: precio, familia: familia, imagen: imagenToSend, id: id}) */
+      
       openMenuHandler();
       message.success("Producto añadido con éxito!",[1]);
       setTimeout(() => {
         window.location.reload();
       }, 500);
-        
-        /* axios.post('http://localhost:9000/api/products/addproducts', {name, price, family, image});
-        openMenuHandler();
-        message.success("Producto Añadido!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000); */
     }
 
     const initialValues = {
@@ -560,14 +553,7 @@ const ImageWrapper = styled.div`
 
 
 
-const Text = styled.div`
-    width: 100%;
-    height: 10%;
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    transform: translateY(-10px);
-`;
+
 
 
 
