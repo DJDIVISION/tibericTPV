@@ -86,6 +86,8 @@ const BillMenu = ({billMenu, setBillMenu, actionMenu, setActionMenu, barMenuOpen
         setCart([]);
         setSelectedTable("");
     }
+
+    
     
 
   return (

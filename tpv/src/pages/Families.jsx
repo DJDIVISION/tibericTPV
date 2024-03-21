@@ -41,7 +41,6 @@ const Products = () => {
     
     const fetchFamilies = async () => {
       const snapshot = await firebase.firestore().collection('familias').get()
-      console.log(snapshot.docs.map(doc => doc.data()));
       setFamilies(snapshot.docs.map(doc => doc.data()));
     };
 
@@ -66,12 +65,12 @@ const Products = () => {
     }
 
     const handleFormSubmit = async () => {
-        const id = (families.length + 1).toString();
+        const id = (families.length + 1);
         const imageRef = ref(imageDB, `familias/${imagen.name}`);
         try{
             await uploadBytesResumable(imageRef, imagen).then(() => {
                 getDownloadURL(imageRef).then(async (downloadURL) => {
-                    await setDoc(doc(db, "familias", id), {
+                    await setDoc(doc(db, "familias", id.toString()), {
                         id: id,
                         familia: familia,
                         photoURL: downloadURL

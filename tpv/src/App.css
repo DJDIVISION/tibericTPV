@@ -100,3 +100,11 @@ a{
   color: white !important;
 }
 
+#demo-simple-select-label{
+  color: white !important;
+}
+
+.css-1ligsj1-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root{
+  color: white !important;
+}
+

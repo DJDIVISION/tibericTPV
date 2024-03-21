@@ -88,6 +88,8 @@ export default function Home() {
 }
 
 
+
+
   return (
     <motion.div initial="out" animate="in" variants={animationTwo} transition={transitionTwo}>
       <HomeSection>

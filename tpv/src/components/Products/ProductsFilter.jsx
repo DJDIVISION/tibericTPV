@@ -22,20 +22,35 @@ function ProductsFilter({productsMenu, setProductsMenu, productParams, showOverl
     
 
     useEffect(() => {
-        if (activeFamily === "BEBIDAS"){
-            const filtered = products.filter(el => el.familia === "BEBIDAS"); 
-            setFiltered(filtered);
-        } else if (activeFamily === "TAPAS"){
-            const filtered = products.filter(el => el.familia === "TAPAS"); 
-            setFiltered(filtered);
-        } else if (activeFamily === "BOCADILLOS"){
-            const filtered = products.filter(el => el.familia === "BOCADILLOS"); 
+        if (activeFamily === "REFRESCOS"){
+            const filtered = products.filter(el => el.familia === "REFRESCOS"); 
             setFiltered(filtered);
         } else if (activeFamily === "CERVEZAS"){
             const filtered = products.filter(el => el.familia === "CERVEZAS"); 
             setFiltered(filtered);
         } else if (activeFamily === "CAFÉS"){
             const filtered = products.filter(el => el.familia === "CAFÉS"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "LICORES"){
+            const filtered = products.filter(el => el.familia === "LICORES"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "COMBINADOS"){
+            const filtered = products.filter(el => el.familia === "COMBINADOS"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "TAPAS"){
+            const filtered = products.filter(el => el.familia === "TAPAS"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "BOCADILLOS FRÍOS"){
+            const filtered = products.filter(el => el.familia === "BOCADILLOS FRÍOS"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "BOCADILLOS CALIENTES"){
+            const filtered = products.filter(el => el.familia === "BOCADILLOS CALIENTES"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "MENÚS"){
+            const filtered = products.filter(el => el.familia === "MENÚS"); 
+            setFiltered(filtered);
+        } else if (activeFamily === "VINOS"){
+            const filtered = products.filter(el => el.familia === "VINOS"); 
             setFiltered(filtered);
         } 
         
@@ -102,11 +117,11 @@ const Filter = styled.div`
     display: grid;
     align-items: center;
     justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-row-gap: 80px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-row-gap: 10px;
     padding: 30px;
     //transform: translateX(-25vw);
-    margin-top: 10vh;
+    margin-top: 5vh;
 `;
 
 const Card = styled(motion.div)`

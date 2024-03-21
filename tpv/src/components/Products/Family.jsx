@@ -30,7 +30,7 @@ const Family = () => {
 
     useEffect(() => {
       fetchProducts();
-    }, []);
+    }, []); 
 
     
 
@@ -170,7 +170,7 @@ const Section = styled.div`
 `;
 
 const Familia = styled(motion.div)`
-    width: 130px;
+    width: 135px;
     height: 40px;
     border: 1px solid #858585;
     margin: 5px 0;

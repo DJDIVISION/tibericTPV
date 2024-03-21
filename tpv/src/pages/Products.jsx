@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Box, Button, TextField } from "@mui/material";
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
 import { row } from 'mathjs';
 import { Formik } from "formik";
 import { tokens } from "./theme.jsx";
@@ -14,12 +18,10 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import EditIcon from '@mui/icons-material/Edit';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {  message } from 'antd';
-import axios from 'axios'
 import { animationFour, transitionTwo } from "../animations";
-import { useSelector } from "react-redux";
-import { db, v9db } from "../components/firebase.jsx";
-import { getStorage, ref } from "firebase/storage";
+import { db, imageDB } from "../components/firebase.jsx";
 import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, listAll, getDownloadURL } from "firebase/storage";
 import firebase from 'firebase/compat/app';
 import { Section, PageHeader, AddProduct, PageIconWrapper, PageIcon, PageTitle, PageTable, IconLine, PageTimes,
 item, Text } from '../components/index.jsx';
@@ -27,6 +29,7 @@ item, Text } from '../components/index.jsx';
 const Products = () => {
 
     const [products, setProducts] = useState([]);
+    const [families, setFamilies] = useState([]);
     const [openMenu, setOpenMenu] = useState(false);
     const [openEditMenu, setOpenEditMenu] = useState(false);
     const [producto, setProducto] = useState("");
@@ -47,11 +50,20 @@ const Products = () => {
       fetchProducts();
     }, []);
 
-    console.log(products);
+    const fetchFamilies = async () => {
+      const snapshot = await firebase.firestore().collection('familias').get()
+      const fam = [];
+      snapshot.forEach((doc) => {
+        fam.push(doc.data().familia);
+      })
+      setFamilies(fam);
+    };
 
-    
+    useEffect(() => {
+        fetchFamilies();
+    }, []);
 
-    
+    console.log(families);
 
     const handleClick = async (event, cellValues) => {
       const id = (cellValues.id).toString();
@@ -156,20 +168,29 @@ const Products = () => {
     const handleFormSubmit = async () => {
       const imagePath = imagen.name; 
       const id = (products.length + 1).toString();
-      const imagenToSend =  "/images/"+ imagePath;
-      await setDoc(doc(db, "productos", id), {
-        producto: producto,
-        precio: precio,
-        familia: familia,
-        imagen: imagenToSend,
-        id: id
-      });
+      const imageRef = ref(imageDB, `productos/${imagePath}`);
+      try{
+        await uploadBytesResumable(imageRef, imagen).then(() => {
+            getDownloadURL(imageRef).then(async (downloadURL) => {
+                await setDoc(doc(db, "productos", id), {
+                    id: id,
+                    producto: producto,
+                    precio: precio,
+                    familia: familia,
+                    imagen: downloadURL
+                })
+            })
+            openMenuHandler();
+            message.success("Producto añadido con éxito!",[1]);
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+              })
+    } catch (err) {
+        console.log(err);
+    }
       
-      openMenuHandler();
-      message.success("Producto añadido con éxito!",[1]);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+      
     }
 
     const initialValues = {
@@ -317,22 +338,28 @@ const Products = () => {
                       delay:0.6
                     }
                  }} style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
-              <TextField
-                fullWidth
+              <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Familia</InputLabel>
+              <Select
+              
                 variant="outlined"
                 type="text"
                 label="Familia"
                 sx={{border: '1px solid white', margin: '20px 0'}}
-                
                 onChange={(e) => setFamilia(e.target.value.toUpperCase())}
                 name="familia"
                 inputProps={{
                   style:{ fontFamily: "Quicksand", textTransform: "uppercase", color: "white"}
                 }}
-                InputLabelProps={{
-                    style: { color: "white" },
-                  }}
-              /></motion.div>
+              >
+                {families.map((el) => {
+                  return(
+                    <MenuItem value={el}>{el}</MenuItem>
+                  )
+                })}
+              </Select>
+              </FormControl>
+              </motion.div>
               <motion.div initial={{y:100,opacity:0}} animate={{y:0, opacity:1}}
                  transition={{delay:.8}}
                  exit={{

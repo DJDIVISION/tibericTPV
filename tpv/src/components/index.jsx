@@ -10,6 +10,7 @@ import LogoBack from "../images/restLogo.png";
 import TableBarIcon from '@mui/icons-material/TableBar';
 import DeckIcon from '@mui/icons-material/Deck';
 import wood from "../images/wood.jpg"
+import paellas from "../images/paellas.jpg"
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import EuroIcon from '@mui/icons-material/Euro';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -810,6 +811,10 @@ export const ProductMenuSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url(${paellas});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 `;
 
 // *********** BILL BISPLAY ******
