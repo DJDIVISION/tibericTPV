@@ -7,7 +7,7 @@ import { IconButton } from '@mui/material'
 import { TableState } from '../../context/TableContext.jsx';
 import { CartContext, TotalOrderContext } from '../../context/contexts.jsx'
 
-const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMenu, billMenu, setBillMenu, barMenuOpen, setBarMenuOpen}) => {
+const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMenu, billMenu, setBillMenu, barMenuOpen, setBarMenuOpen, setTableSettings}) => {
 
     const {selectedTable, setSelectedTable} = TableState();
     const {tableEmpty, setTableEmpty} = TableState(); 
@@ -20,6 +20,7 @@ const SetActionMenu = ({ actionMenu, setActionMenu, setProductsMenu, productsMen
         setBarMenuOpen(false);
         setProductsMenu(false);
         setTableEmpty(false);
+        setTableSettings(false);
         setCart([]);
         setTotalOrder(0);
     }

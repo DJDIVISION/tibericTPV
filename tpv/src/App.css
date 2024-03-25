@@ -71,6 +71,35 @@ a{
   align-items: center;
 }
 
+.menu-container-seven{
+  position:absolute;
+  width:25vw;
+  height:60vh;
+  top: 40vh;
+  left: 0;
+  color:#fff;
+  display:flex;
+  background-color:orange;
+  flex-direction: column;
+  z-index: 1000;
+  align-items: center;
+}
+
+.menu-container-eight{
+  position:absolute;
+  width:75vw;
+  height:100vh;
+  top: 0;
+  left: 0;
+  color:#fff;
+  display:flex;
+  background-color:#832f2c;
+  flex-direction: column;
+  z-index: 1000;
+  justify-content: center;
+  transform: translate(-5vw, -12vh);
+}
+
 .smartcontainer {
   display: flex;  
   width:100%;

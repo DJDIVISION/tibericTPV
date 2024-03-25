@@ -11,19 +11,24 @@ import { firebaseApp } from '../../components/firebase.jsx';
 import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 import { CartContext } from "../../context/contexts.jsx"
+import { message } from 'antd';
 
 
-const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu}) => {
+const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu, tableSettings, setTableSettings, splitMenu, setSplitMenu}) => {
 
     const [bills, setBills] = useState([]);
     const [allTables, setAllTables] = useState([]);
     const {selectedTable, setSelectedTable} = TableState();
+    const {tableToTransfer, setTableToTransfer} = TableState();
+    const {tableToSplit, setTableToSplit} = TableState();
     const [billMenuOpen, setBillMenuOpen] = useState(false);
     const {tableEmpty, setTableEmpty} = TableState(); 
     const [barData, setBarData] = useState([]);
     const {cart, setCart} = useContext(CartContext);
     
     console.log(cart);
+    
+    
 
     const getBills = async () => {
       const snapshot = await firebase.firestore().collection('cuentas').get()
@@ -53,43 +58,54 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     
 
   const Openpop = async (el) => {
-    setSelectedTable(el.target.id);
-    setBarMenuOpen(!barMenuOpen);
-    setActionMenu(!actionMenu);
-    const checkRef = db.collection('cuentas').doc(el.target.id);
-    const doc = await checkRef.get();
-    const res = (doc.data());
-    if(res[0].producto !== ""){
-      setCart(res);
+    if(tableToTransfer ===  el.target.id){
+      message.error("La mesa seleccionada es la misma!");
+      return
     }
-    //setCart(doc.data());
-    /* const checkRef = db.collection('cuentas').doc(el.target.id);
-    const doc = await checkRef.get();
-    if (!doc.exists) {
-      if(cart.cartItems.length === 0){
-        dispatch(clearCart());
-        dispatch(getTotals());
-        setTableEmpty(true);
-        setAddProducts(true);
-      }
+    if(tableToSplit){
+      setSplitMenu(true);
+      setSelectedTable(el.target.id);
+      return
+    }
+    if(tableSettings === true){
+      setSelectedTable(el.target.id);
+      console.log(cart);
+        await setDoc(doc(db, "cuentas", el.target.id), {
+            ...cart
+          });
+        await setDoc(doc(db, "cuentas", tableToTransfer), {
+          0 : {
+              producto: "",
+              precio: "",
+              cantidad: "",
+              imagen: "",
+              familia: "",
+              id: ""
+          }
+      })
+        message.success("Mesa transferida con éxito!");
+        setBarMenuOpen(!barMenuOpen);
+        setActionMenu(false);
+        setTableSettings(false);
+        setSelectedTable("");
+        setCart([]);
+        
     } else {
-      (doc.data().cartItems.forEach((el) => {
-        if(cart.cartItems.length === 0){
-          dispatch(addToCart(el));
-          dispatch(getTotals());
-          
-          setAddProducts(true);
-        } else {
-          dispatch(clearCart());
-          dispatch(getTotals());
-          dispatch(addToCart(el));
-          dispatch(getTotals());
-          
-          setAddProducts(true);
-        }
-      }));
-    } */
+      setSelectedTable(el.target.id);
+      setBarMenuOpen(!barMenuOpen);
+      setActionMenu(!actionMenu);
+      const checkRef = db.collection('cuentas').doc(el.target.id);
+      const doc = await checkRef.get();
+      const res = (doc.data());
+      if(res[0].producto !== ""){
+        setCart(res);
+      }
+    }
+
   }
+
+  console.log(selectedTable);
+  console.log(tableToSplit);
   return (
     <motion.div className="menu-container-four" variants={item}
           initial={{width:0,opacity:0, x: "25vw"}}

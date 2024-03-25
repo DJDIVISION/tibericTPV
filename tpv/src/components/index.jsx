@@ -17,10 +17,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 //**************CIERRES *********** */
 
 export const CierreCaja = styled(ClosedCaptionIcon)`
+  &&&{
+    color: white;
+  }
+`;
+
+export const TableSettingsIcon = styled(SettingsIcon)`
   &&&{
     color: white;
   }
@@ -80,6 +87,15 @@ export const PickerTitle = styled.div`
   place-items: center;
   color: white;
   font-size: 16px;
+`;
+
+export const TransferTitle = styled.div`
+  width: 100%;
+  height: 20%;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 20px;
 `;
 
 export const PickerWrapper = styled.div`
@@ -588,6 +604,13 @@ display: flex;
 align-items: center;
 `;
 
+export const SmallMenuHeader = styled.div`
+width: 100%;
+height: 50px;
+display: flex;
+align-items: center;
+`;
+
 export const MenuTitle = styled.div`
   width: 100%;
   height: 50px;
@@ -811,10 +834,10 @@ export const ProductMenuSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url(${paellas});
+  /* background-image: url(${paellas});
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: cover; */
 `;
 
 // *********** BILL BISPLAY ******
@@ -842,6 +865,7 @@ export const BillDisplaySmall = styled.div`
   place-items: center;
   color: white;
   font-size: 18px;
+  margin: 5px 0;
 `;
 
 export const BillDisplayBig = styled.div`
@@ -914,6 +938,8 @@ export const BillPrice = styled.div`
   color: white;
   font-size: 24px;
 `;
+
+
 
 export const SendRow = styled.div`
   width: 40%;
