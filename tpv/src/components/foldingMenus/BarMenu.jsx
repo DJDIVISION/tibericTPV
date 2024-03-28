@@ -10,11 +10,11 @@ import { db, v9db } from "../../components/firebase.jsx";
 import { firebaseApp } from '../../components/firebase.jsx';
 import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
-import { CartContext } from "../../context/contexts.jsx"
+import { CartContext, TotalOrderContext } from "../../context/contexts.jsx"
 import { message } from 'antd';
 
 
-const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu, tableSettings, setTableSettings, splitMenu, setSplitMenu}) => {
+const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu, tableSettings, setTableSettings, splitMenu, setSplitMenu, transferTable, setTransferTable, splitTable, setSplitTable}) => {
 
     const [bills, setBills] = useState([]);
     const [allTables, setAllTables] = useState([]);
@@ -25,9 +25,7 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     const {tableEmpty, setTableEmpty} = TableState(); 
     const [barData, setBarData] = useState([]);
     const {cart, setCart} = useContext(CartContext);
-    
-    console.log(cart);
-    
+    const {totalOrder, setTotalOrder} = useContext(TotalOrderContext);
     
 
     const getBills = async () => {
@@ -52,6 +50,14 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     const closeMenu = () => {
         setBarMenuOpen(!barMenuOpen);
         setProductsMenu(false);
+        setTableSettings(false);
+        setSplitTable(false);
+        setTransferTable(false);
+        setTableToTransfer("");
+        setTableToSplit("");
+        setCart([]);
+        setTotalOrder(0);
+        setSelectedTable("");
     }
 
 
@@ -88,6 +94,8 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
         setActionMenu(false);
         setTableSettings(false);
         setSelectedTable("");
+        setTableSettings(!tableSettings);
+        setTransferTable(!transferTable)
         setCart([]);
         
     } else {
@@ -104,8 +112,6 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
 
   }
 
-  console.log(selectedTable);
-  console.log(tableToSplit);
   return (
     <motion.div className="menu-container-four" variants={item}
           initial={{width:0,opacity:0, x: "25vw"}}

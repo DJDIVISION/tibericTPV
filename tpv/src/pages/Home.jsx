@@ -6,12 +6,14 @@ import { TableState } from "../context/TableContext.jsx";
 import { CartContext, ResetProductContext, TotalOrderContext } from "../context/contexts.jsx"
 import styled from 'styled-components'
 import {motion} from "framer-motion"
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import HighlightOff from "@mui/icons-material/HighlightOff.js";
 import { message } from "antd";
 import NavBar from '../components/NavBar'
 import {animationTwo, transitionTwo} from '../animations'
 import { HomeSection, LeftColumn, BigHalf, RightColumn, HalfColumn, BillDisplay, BillWrapper, BillDisplaySmall,
-  BillDisplayBig, BillPrice, BillButtons, LinkIcon, TableSettingsIcon } from '../components'
+  BillDisplayBig, BillPrice, BillButtons, LinkIcon, TableSettingsIcon, TransferTitle, MyButton, Billpop, item,
+  SmallMenuHeader } from '../components'
 import Calculator from '../components/calculator/Calculator'
 import ProductsFilter from '../components/Products/ProductsFilter.jsx';
 import BarMenu from "../components/foldingMenus/BarMenu.jsx";
@@ -40,16 +42,25 @@ export default function Home() {
   const [productsMenu, setProductsMenu] = useState(false);
   const [billMenu, setBillMenu] = useState(false);
   const [splitMenu, setSplitMenu] = useState(false);
+  const [splitTable, setSplitTable] = useState(false);
+  const [transferTable, setTransferTable] = useState(false);
+  const {tableToTransfer, setTableToTransfer} = TableState();
   const [addProductsMenu, setAddProductsMenu] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [actionMenu, setActionMenu] = useState(false);
   const {selectedTable, setSelectedTable} = TableState();
   const {cartModified, setCartModified} = TableState();
-  const {tableEmpty, setTableEmpty} = TableState();
+  const {tableToSplit, setTableToSplit} = TableState();
   const products = useSelector((state) => state.allProducts.products);
   const dispatch = useDispatch();
   const {cart, setCart} = useContext(CartContext);
   const {totalOrder, setTotalOrder} = useContext(TotalOrderContext);
+
+  const setBar = async () => {
+    setBarMenuOpen(true);
+    setActionMenu(false);
+    setTableToTransfer(selectedTable);
+}
   
 
   const fetchProducts = async () => {
@@ -74,8 +85,6 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  console.log(cart);
-
   const sendCart = async (productProps) => {
     console.log(cart);
     await setDoc(doc(db, "cuentas", selectedTable), {
@@ -96,6 +105,30 @@ const openTableSettings = () => {
   setTableSettings(!tableSettings);
 }
 
+const closeTransfer = () => {
+  setTransferTable(!transferTable);
+  setTableSettings(!tableSettings);
+  setBarMenuOpen(false);
+  setTotalOrder(0);
+  setSelectedTable("");
+  setCart([]);
+  setTableToSplit("");
+  setTableToTransfer("");
+  setActionMenu(false);
+}
+
+const closeSplit = () => {
+  setSplitTable(!splitTable);
+  setTableSettings(!tableSettings);
+  setBarMenuOpen(false);
+  setTotalOrder(0);
+  setSelectedTable("");
+  setCart([]);
+  setTableToSplit("");
+  setTableToTransfer("");
+  setActionMenu(false);
+}
+
 
   return (
     <motion.div initial="out" animate="in" variants={animationTwo} transition={transitionTwo}>
@@ -104,7 +137,8 @@ const openTableSettings = () => {
         <LeftColumn>
           <HalfColumn>
           <Calculator barMenuOpen={barMenuOpen} setBarMenuOpen={setBarMenuOpen} productsMenu={productsMenu} setProductsMenu={setProductsMenu} actionMenu={actionMenu} setActionMenu={setActionMenu}
-          roomMenuOpen={roomMenuOpen} setRoomMenuOpen={setRoomMenuOpen} terraceMenuOpen={terraceMenuOpen} setTerraceMenuOpen={setTerraceMenuOpen}/>
+          roomMenuOpen={roomMenuOpen} setRoomMenuOpen={setRoomMenuOpen} terraceMenuOpen={terraceMenuOpen} setTerraceMenuOpen={setTerraceMenuOpen} splitTable={splitTable} setSplitTable={setSplitTable}
+          transferTable={transferTable} setTransferTable={setTransferTable} tableSettings={tableSettings} setTableSettings={setTableSettings}/>
           </HalfColumn>
           <BigHalf>
             <BillDisplay>
@@ -135,7 +169,7 @@ const openTableSettings = () => {
         
       </HomeSection>
         {barMenuOpen && (
-          <BarMenu setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} setProductsMenu={setProductsMenu} productsMenu={productsMenu} setActionMenu={setActionMenu} actionMenu={actionMenu} tableSettings={tableSettings} setTableSettings={setTableSettings} splitMenu={splitMenu} setSplitMenu={setSplitMenu}/>
+          <BarMenu setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} setProductsMenu={setProductsMenu} productsMenu={productsMenu} setActionMenu={setActionMenu} actionMenu={actionMenu} tableSettings={tableSettings} setTableSettings={setTableSettings} splitMenu={splitMenu} setSplitMenu={setSplitMenu} transferTable={transferTable} setTransferTable={setTransferTable} splitTable={splitTable} setSplitTable={setSplitTable}/>
         )}
         {productsMenu && (
         <ProductsFilter setProductsMenu={setProductsMenu} productsMenu={productsMenu} showOverlay={showOverlay} setShowOverlay={setShowOverlay}/>
@@ -147,11 +181,59 @@ const openTableSettings = () => {
           <BillMenu billMenu={billMenu} setBillMenu={setBillMenu} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu}/>
         )}
         {tableSettings && (
-          <TableSettings tableSettings={tableSettings} setTableSettings={setTableSettings} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu}/>
+          <TableSettings tableSettings={tableSettings} setTableSettings={setTableSettings} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu} splitTable={splitTable} setSplitTable={setSplitTable} transferTable={transferTable} setTransferTable={setTransferTable}/>
         )}
         {splitMenu && (
-          <SplitMenu splitMenu={splitMenu} setSplitMenu={setSplitMenu} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu}/>
+          <SplitMenu splitMenu={splitMenu} setSplitMenu={setSplitMenu} setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} actionMenu={actionMenu} setActionMenu={setActionMenu} splitTable={splitTable} setSplitTable={setSplitTable} setTableSettings={setTableSettings} tableSettings={tableSettings}/>
         )}
+        {transferTable && (
+          <motion.div className="menu-container-seven" variants={item}
+          initial={{width:0,opacity:0}}
+          animate={{width:"25VW", opacity:1}}
+          transition={{duration:.5}}
+          exit="exit">
+                <Billpop>
+                <SmallMenuHeader>
+                <IconButton style={{transform: "scale(1.2)"}} onClick={closeTransfer}><HighlightOff style={{color: "white"}}/></IconButton>
+                </SmallMenuHeader>
+                <BillDisplay>
+                    <BillDisplaySmall></BillDisplaySmall>
+                    <BillDisplayBig id="tableDisplay">MESA: {selectedTable}</BillDisplayBig>
+                    <BillDisplaySmall></BillDisplaySmall>
+                </BillDisplay>
+                <TransferTitle>SELECCIONA MESA DESTINO</TransferTitle>
+                <div style={{display: 'flex'}}>
+                    <MyButton onClick={setBar}>BARRA</MyButton>
+                    <MyButton>SALA</MyButton>
+                    <MyButton>TERRAZA</MyButton>
+                </div>
+                </Billpop>
+                </motion.div>
+            )}
+            {splitTable && (
+              <motion.div className="menu-container-seven" variants={item}
+              initial={{width:0,opacity:0}}
+              animate={{width:"25VW", opacity:1}}
+              transition={{duration:.5}}
+              exit="exit">
+                <Billpop>
+                <SmallMenuHeader>
+                <IconButton style={{transform: "scale(1.2)"}} onClick={closeSplit}><HighlightOff style={{color: "white"}}/></IconButton>
+                </SmallMenuHeader>
+                <BillDisplay>
+                    <BillDisplaySmall></BillDisplaySmall>
+                    <BillDisplayBig id="tableDisplay">MESA: {tableToSplit}</BillDisplayBig>
+                    <BillDisplaySmall></BillDisplaySmall>
+                </BillDisplay>
+                <TransferTitle>SELECCIONA MESA DESTINO</TransferTitle>
+                <div style={{display: 'flex'}}>
+                    <MyButton onClick={setBar}>BARRA</MyButton>
+                    <MyButton>SALA</MyButton>
+                    <MyButton>TERRAZA</MyButton>
+                </div>
+                </Billpop>
+                </motion.div>
+            )}
     </motion.div>
   )
 }

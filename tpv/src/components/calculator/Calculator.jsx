@@ -11,7 +11,8 @@ import { TableState } from '../../context/TableContext.jsx';
 import { CartContext, ResetProductContext, TotalOrderContext } from "../../context/contexts.jsx"
 
 
-export default function Calculator({barMenuOpen, setBarMenuOpen, productsMenu, setProductsMenu, roomMenuOpen, setRoomMenuOpen, terraceMenuOpen, setTerraceMenuOpen, actionMenu, setActionMenu}) {
+export default function Calculator({barMenuOpen, setBarMenuOpen, productsMenu, setProductsMenu, roomMenuOpen, setRoomMenuOpen, terraceMenuOpen, setTerraceMenuOpen, actionMenu, setActionMenu,
+transferTable, setTransferTable, splitTable, setSplitTable, tableSettings, setTableSettings}) {
 
     const [text, setText] = useState("");
     const [result, setResult] = useState("");
@@ -107,6 +108,9 @@ export default function Calculator({barMenuOpen, setBarMenuOpen, productsMenu, s
         setCart([]);
         setTotalOrder(0);
         setActionMenu(false);
+        setTableSettings(false);
+        setTransferTable(false);
+        setSplitTable(false);
     };
     
     const calculateResult = () => {

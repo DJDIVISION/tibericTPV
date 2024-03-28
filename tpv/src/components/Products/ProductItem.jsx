@@ -3,7 +3,7 @@ import { CartContext, ResetProductContext, TotalOrderContext } from "../../conte
 import styled from "styled-components"
 import { motion, useAnimation } from 'framer-motion'
 import {IconRowColumn, ProductsImage, MenuTitleMedium, PopoverHeaderTwo, item, BigRow, ProductsPopover, PopoverHeader, IconRow, Cross, 
-    AddDeleteRow, IconRowRow, Button, IconRowText, MenuTitleTwo, WhiteCross} from "../index.jsx"
+    AddDeleteRow, IconRowRow, BestButton, IconRowText, MenuTitleTwo, WhiteCross} from "../index.jsx"
 import { TableState } from '../../context/TableContext.jsx';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { IconButton, Avatar } from '@mui/material';
@@ -78,7 +78,7 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
         }
         console.log(productProps);
         
-    }, [productToReset, cart,productProps,setProductToReset, setReadytoSend])
+    }, [ cart, productProps])
 
     console.log(cart);
 
@@ -149,19 +149,19 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
                   <BigRow>
                     <IconRowColumn>
                         <IconRowRow>
-                        <motion.div whileTap={{scale: 0.95}}><Button onClick={() => ClosePop(productProps)}><WhiteCross /></Button></motion.div>
+                        <motion.div whileTap={{scale: 0.95}}><BestButton onClick={() => ClosePop(productProps)}><WhiteCross /></BestButton></motion.div>
                         </IconRowRow>
                         <IconRowText><MenuTitleTwo><h3>ELIMINAR PRODUCTO</h3></MenuTitleTwo></IconRowText>
                     </IconRowColumn>
                     <IconRowColumn>
                         <IconRowRow>
-                        <motion.div whileTap={{scale: 0.95}}><Button onClick={() => addMore(productProps)}><Add /></Button></motion.div>
+                        <motion.div whileTap={{scale: 0.95}}><BestButton onClick={() => addMore(productProps)}><Add /></BestButton></motion.div>
                         </IconRowRow>
                         <IconRowText><MenuTitleTwo><h3>MÁS PRODUCTOS</h3></MenuTitleTwo></IconRowText>
                     </IconRowColumn>
                     <IconRowColumn>
                         <IconRowRow>
-                        <motion.div whileTap={{scale: 0.95}}><Button onClick={() => sendCart(productProps)}><Send /></Button></motion.div>
+                        <motion.div whileTap={{scale: 0.95}}><BestButton onClick={() => sendCart(productProps)}><Send /></BestButton></motion.div>
                         </IconRowRow>
                         <IconRowText><MenuTitleTwo><h3>ENVIAR</h3></MenuTitleTwo></IconRowText>
                     </IconRowColumn>

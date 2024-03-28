@@ -20,7 +20,7 @@ export default function ProductComponent() {
                         <Picture style={{backgroundImage: `url(${product.imagen})`, backgroundPosition: "center",
                     backgroundSize: 'cover', backgroundRepeat: "no-repeat"}}></Picture>
                         <Text>{product.producto}</Text>
-                        <Text style={{fontSize: "14px"}}>{product.precio}€</Text>
+                        <Text style={{fontSize: "14px"}}>{(product.precio)}€</Text>
             </Card>
     </Overlayer>
         );

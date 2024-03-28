@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import  {motion} from 'framer-motion'
-import { IconButton } from '@mui/material';
+import { IconButton, Button } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -232,7 +232,7 @@ export const Euro = styled(EuroIcon)`
 }
 `;
 
-export const Button = styled(IconButton)`
+export const BestButton = styled(IconButton)`
 &&&{
   transform: scale(2.5);
   border: 0.5px solid #c2c2c2;
@@ -889,6 +889,18 @@ export const Image = styled.div`
   border: 1px solid #a3a3a3;
   border-radius: 10px;
   background: black;
+`;
+
+export const MyButton = styled(Button)`
+&&&{
+    color: white;
+    border: 1px solid white;
+    font-family: "Quicksand";
+    font-weight: bold;
+    background: #3d3d3d;
+    font-size: 12px;
+    margin: 5px 5px 20px 5px;
+}
 `;
 
 export const Product = styled.div`

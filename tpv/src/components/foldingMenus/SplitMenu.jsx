@@ -1,36 +1,86 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {motion} from "framer-motion"
 import {Billpop, MenuHeader, Times, Product, Name, Price, Image} from "../../components/index"
 import HighlightOff from '@mui/icons-material/HighlightOff'
 import {item} from '../index'
-import { IconButton } from '@mui/material'
+import { IconButton, Button } from '@mui/material'
 import { TableState } from '../../context/TableContext'
-import { CartContext } from '../../context/contexts'
+import { CartContext, NewCartContext } from '../../context/contexts'
 import ForwardIcon from '@mui/icons-material/Forward';
+import SendIcon from '@mui/icons-material/Send';
+import { db } from "../../components/firebase.jsx";
+import { setDoc, doc } from "firebase/firestore";
+import { message } from 'antd'
 
-const SplitMenu = ({splitMenu, setSplitMenu}) => {
+const SplitMenu = ({splitMenu, setSplitMenu, setBarMenuOpen, barMenuOpen, splitTable, setSplitTable, setTableSettings, tableSettings}) => {
 
     const {selectedTable, setSelectedTable} = TableState();
     const {tableToSplit, setTableToSplit} = TableState();
     const {cart, setCart} = useContext(CartContext);
-    const [newCart, setNewCart] = useState([]);
+    const {newCart, setNewCart} = useContext(NewCartContext);
+    
 
-    console.log(selectedTable);
-    console.log(tableToSplit);
 
     const closeMenu = () => {
         setSplitMenu(!splitMenu);
     }
 
     const removeProductInCart = (productInCart) => {
-        console.log(productInCart);
-        
+        const nextCart = [...Object.values(cart)];
+        const filter1 = nextCart.filter(el => el.id === productInCart.id);
+        const filter2 = nextCart.filter(el => el.id !== productInCart.id);
+        setCart(filter2);
+        const newCartItems = [
+            filter1[0],
+            ...newCart
+        ]
+        setNewCart(newCartItems);
     }
 
-    useEffect(() => {
+
+    const sendCart = async () => {
+        console.log(cart);
         console.log(newCart);
-    }, [newCart]);
+        console.log(selectedTable);
+        console.log(tableToSplit);
+        if(cart.length === 0){
+            await setDoc(doc(db, "cuentas", tableToSplit), {
+                0 : {
+                    producto: "",
+                    precio: "",
+                    cantidad: "",
+                    imagen: "",
+                    familia: "",
+                    id: ""
+                }
+              }); 
+        } else {
+            await setDoc(doc(db, "cuentas", tableToSplit), {
+                ...cart
+              });
+        }
+        await setDoc(doc(db, "cuentas", selectedTable), {
+            ...newCart
+          });
+          message.success("Mesa separada con éxito!");
+          setSplitMenu(false);
+          setBarMenuOpen(false);
+          setCart([]);
+          setSelectedTable("");
+          setTableToSplit("");
+          setSplitTable(false);
+          setTableSettings(!tableSettings);
+        /* await setDoc(doc(db, "cuentas", tableToSplit), {
+            ...cart
+          });
+        await setDoc(doc(db, "cuentas", selectedTable), {
+          ...newCart
+        });
+        message.success("Mesa separada con éxito!");
+        setSplitMenu(false);
+        setBarMenuOpen(false); */
+    }
 
   return (
     <motion.div className="menu-container-eight" variants={item}
@@ -54,7 +104,7 @@ const SplitMenu = ({splitMenu, setSplitMenu}) => {
                                     <Name><h4>{productInCart.producto}</h4></Name>
                                     <Price></Price>
                                     <Price><h4>X{productInCart.cantidad}</h4></Price>
-                                    <Price><h4>{productInCart.cantidad * productInCart.precio}€</h4></Price>
+                                    <Price><h4>{(productInCart.cantidad * productInCart.precio).toFixed(2)}€</h4></Price>
                                     <IconButton onClick={() => removeProductInCart(productInCart)}><ForwardIcon /></IconButton>
                                 </Product>
                             )
@@ -72,7 +122,7 @@ const SplitMenu = ({splitMenu, setSplitMenu}) => {
                                     <Name><h4>{productInCart.producto}</h4></Name>
                                     <Price></Price>
                                     <Price><h4>X{productInCart.cantidad}</h4></Price>
-                                    <Price><h4>{productInCart.cantidad * productInCart.precio}€</h4></Price>
+                                    <Price><h4>{(productInCart.cantidad * productInCart.precio).toFixed(2)}€</h4></Price>
                                     <IconButton onClick={() => removeProductInCart(productInCart)}><ForwardIcon /></IconButton>
                                 </Product>
                             )
@@ -80,6 +130,7 @@ const SplitMenu = ({splitMenu, setSplitMenu}) => {
                     </SplitCart>
                 </SplitColumns>
             </div>
+            <Button onClick={() => sendCart()} sx={{marginTop: '40px'}} color="success" variant="contained" startIcon={<SendIcon />}>ENVIAR</Button>
         </Billpop>
     </motion.div>
   )
