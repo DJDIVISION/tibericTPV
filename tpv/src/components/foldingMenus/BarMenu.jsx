@@ -6,12 +6,11 @@ import { IconButton } from '@mui/material';
 import {MenuSection, MenuHeader, MenuTitle, MenuTitleTop, item, Times, Popover, Header, IconRow, Cross,
 Check} from "../index.jsx"
 import { TableState } from '../../context/TableContext.jsx';
-import { db, v9db } from "../../components/firebase.jsx";
-import { firebaseApp } from '../../components/firebase.jsx';
-import {  getFirestore, setDoc,  updateDoc, doc, collection, addDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../../components/firebase.jsx";
+import {  getFirestore, getDoc,  setDoc, doc, collection } from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 import { CartContext, TotalOrderContext } from "../../context/contexts.jsx"
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 
 
 const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, setActionMenu, actionMenu, tableSettings, setTableSettings, splitMenu, setSplitMenu, transferTable, setTransferTable, splitTable, setSplitTable}) => {
@@ -23,9 +22,10 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     const {tableToSplit, setTableToSplit} = TableState();
     const [billMenuOpen, setBillMenuOpen] = useState(false);
     const {tableEmpty, setTableEmpty} = TableState(); 
-    const [barData, setBarData] = useState([]);
+    const [transferProducs, setTransferProducts] = useState([]);
     const {cart, setCart} = useContext(CartContext);
     const {totalOrder, setTotalOrder} = useContext(TotalOrderContext);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
 
     const getBills = async () => {
@@ -43,9 +43,27 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
       }
     }
 
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    
+  
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
+
     useEffect(() => {
       getBills();
     }, []);
+
+    useEffect(() => {
+      console.log(selectedTable);
+    }, [selectedTable]);
+
+    useEffect(() => {
+      console.log(tableToTransfer);
+    }, [tableToTransfer]);
 
     const closeMenu = () => {
         setBarMenuOpen(!barMenuOpen);
@@ -75,28 +93,38 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     }
     if(tableSettings === true){
       setSelectedTable(el.target.id);
-      console.log(cart);
+      console.log(selectedTable);
+      console.log(tableToTransfer);
+      const docRef = doc(db, "cuentas", el.target.id);
+      const docSnap = await getDoc(docRef);
+      const res = docSnap.data();
+      setTransferProducts(docSnap.data());
+      console.log(res[0].producto);
+      if(!res[0].producto){
         await setDoc(doc(db, "cuentas", el.target.id), {
-            ...cart
-          });
-        await setDoc(doc(db, "cuentas", tableToTransfer), {
-          0 : {
-              producto: "",
-              precio: "",
-              cantidad: "",
-              imagen: "",
-              familia: "",
-              id: ""
-          }
-      })
-        message.success("Mesa transferida con éxito!");
-        setBarMenuOpen(!barMenuOpen);
-        setActionMenu(false);
-        setTableSettings(false);
-        setSelectedTable("");
-        setTableSettings(!tableSettings);
-        setTransferTable(!transferTable)
-        setCart([]);
+          ...cart
+        });
+      await setDoc(doc(db, "cuentas", tableToTransfer), {
+        0 : {
+            producto: "",
+            precio: "",
+            cantidad: "",
+            imagen: "",
+            familia: "",
+            id: ""
+        }
+    })
+      message.success("Mesa transferida con éxito!");
+      setBarMenuOpen(!barMenuOpen);
+      setActionMenu(false);
+      setTableSettings(false);
+      setSelectedTable("");
+      setTableSettings(!tableSettings);
+      setTransferTable(!transferTable)
+      setCart([]);
+      } else {
+        showModal();
+      }
         
     } else {
       setSelectedTable(el.target.id);
@@ -111,6 +139,52 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
     }
 
   }
+
+  const handleOk = async () => {
+    const newCart = Object.values(cart);
+    const newTrans = Object.values(transferProducs);
+    const prods = [
+      ...newCart,
+      ...newTrans
+    ]
+
+    function groupById(array) {
+      let groupedArray = array.reduce((acc, obj) => {
+          const found = acc.find(item => item.id === obj.id);
+          if (found) {
+              found.cantidad += obj.cantidad;
+          } else {
+              acc.push({...obj});
+          }
+          return acc;
+      }, []);
+  
+      return groupedArray;
+  }
+  
+      let groupedArray = groupById(prods);
+      await setDoc(doc(db, "cuentas", selectedTable), {
+        ...groupedArray
+      });
+      await setDoc(doc(db, "cuentas", tableToTransfer), {
+          0 : {
+              producto: "",
+              precio: "",
+              cantidad: "",
+              imagen: "",
+              familia: "",
+              id: ""
+          }
+      })
+      message.success("Mesa transferida con éxito!");
+      setBarMenuOpen(!barMenuOpen);
+      setActionMenu(false);
+      setTableSettings(false);
+      setSelectedTable("");
+      setTableSettings(!tableSettings);
+      setTransferTable(!transferTable)
+      setCart([]);
+  };
 
   return (
     <motion.div className="menu-container-four" variants={item}
@@ -134,6 +208,10 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
                 <Table className="inactive" id="b7" onClick={(el) => {Openpop(el)}}>B7</Table>
                 <Table className="inactive" id="b8" onClick={(el) => {Openpop(el)}}>B8</Table>
             </Tables>
+            <Modal title="¡Mesa ocupada!" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <p>La mesa de destino está ocupada.</p>
+            <p>¿Quieres unir las dos mesas?</p>
+          </Modal>
             </MenuSection>
           </motion.div>
   )

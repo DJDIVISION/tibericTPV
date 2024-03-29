@@ -91,11 +91,13 @@ const BillMenu = ({billMenu, setBillMenu, actionMenu, setActionMenu, barMenuOpen
         const date = new Date().toLocaleDateString().toString();
         const time = new Date().toLocaleTimeString().toString();
         const dateMS = new Date().getTime().toString();
-        handlePrint();
+        /* handlePrint(); */
+        const amount = parseFloat(totalOrder,10)
+        console.log(typeof amount)
         await setDoc(doc(db, "facturas", dateMS), {
             fecha: date, 
             hora: time, 
-            importe: totalOrder, 
+            importe: amount, 
             mesa: selectedTable, 
             metodoPago: payment,
             productos: {...cart}
@@ -124,11 +126,12 @@ const BillMenu = ({billMenu, setBillMenu, actionMenu, setActionMenu, barMenuOpen
         const date = new Date().toLocaleDateString().toString();
         const time = new Date().toLocaleTimeString().toString();
         const dateMS = new Date().getTime().toString();
-        handlePrint();
+        const amount = parseFloat(totalOrder,10)
+        /* handlePrint(); */
         await setDoc(doc(db, "facturas", dateMS), {
             fecha: date, 
             hora: time, 
-            importe: totalOrder, 
+            importe: amount, 
             mesa: selectedTable, 
             metodoPago: payment,
             productos: {...cart}

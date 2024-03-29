@@ -36,9 +36,7 @@ export default function ProductsCart() {
         setOpenDelete(!openDelete); */
     }
 
-    useEffect(() => {
-        console.log(cart);
-    }, [cart]);
+    
 
   return (
     <Section>
