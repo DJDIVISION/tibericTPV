@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import styled from "styled-components"
-import { motion, useAnimation } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {Billpop, MenuHeader, MenuTitleTop, MenuTitle, BillRow, BillColumn, item, Times, BillIcon, BigButton, BillText, Cross, 
     Euro, Card} from "../index.jsx"
 import { TableState } from '../../context/TableContext.jsx';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { db } from "../../components/firebase.jsx"
-import { firebaseApp } from '../../components/firebase.jsx';
-import {  getFirestore, setDoc,  updateDoc, doc } from "firebase/firestore";
-import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
-import Add from '@mui/icons-material/Add'
-import { useDispatch, useSelector } from 'react-redux'
+import {  setDoc, doc } from "firebase/firestore";
 import { CartContext, TotalOrderContext } from '../../context/contexts.jsx';
 import { message } from 'antd';
 import { useReactToPrint } from 'react-to-print';
@@ -95,6 +91,7 @@ const BillMenu = ({billMenu, setBillMenu, actionMenu, setActionMenu, barMenuOpen
         const amount = parseFloat(totalOrder,10)
         console.log(typeof amount)
         await setDoc(doc(db, "facturas", dateMS), {
+            id: dateMS,
             fecha: date, 
             hora: time, 
             importe: amount, 

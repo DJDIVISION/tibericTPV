@@ -13,11 +13,18 @@ const TableContext = ({children}) => {
     const [cartModified, setCartModified] = useState(false);
     const [tableToTransfer, setTableToTransfer] = useState("");
     const [tableToSplit, setTableToSplit] = useState("");
-    
+    const [data, setData] = useState([]);
+    const [tableDetails, setTableDetails] = useState([])
+    const [tableAmount, setTableAmount] = useState("");
+    const [tablePaymentMethod, setTablePaymentMethod] = useState("");
+    const [billDate, setBillDate] = useState();
+    const [billTime, setBillTime] = useState();
+    const [reportCierreData, setReportCierreData] = useState([]);
     
     return(
-        <Table.Provider value = {{ setTableToSplit, tableToSplit, tableToTransfer, setTableToTransfer, setTableEmpty, tableEmpty, selectedTable, setSelectedTable, activeFamily, setActiveFamily,
-          setTotalOrder, totalOrder, setCartModified, cartModified}}>
+        <Table.Provider value = {{ setBillTime, billTime, setBillDate, billDate, setTableDetails, tableDetails, setTableAmount, tableAmount, setTablePaymentMethod, tablePaymentMethod, 
+            data, setData, setTableToSplit, tableToSplit, tableToTransfer, setTableToTransfer, setTableEmpty, tableEmpty, selectedTable, setSelectedTable, activeFamily, setActiveFamily,
+          setTotalOrder, totalOrder, setCartModified, cartModified, reportCierreData, setReportCierreData}}>
             {children}
         </Table.Provider>
     )

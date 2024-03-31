@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { esES } from '@mui/x-data-grid/locales';
 import { Box, Button, TextField } from "@mui/material";
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -211,6 +212,7 @@ const Products = () => {
         </PageHeader>
         <PageTable>
         <DataGrid rows={products} columns={columns} getRowId={(row) => row.id} key={row.producto} slots={{ toolbar: GridToolbar }} 
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
     sx={{
         boxShadow: 2,
         border: 2,

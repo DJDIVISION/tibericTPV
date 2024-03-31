@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { esES } from '@mui/x-data-grid/locales';
 import { Box, Button, TextField } from "@mui/material";
 import { row } from 'mathjs';
 import { Formik } from "formik";
@@ -134,6 +135,7 @@ const Products = () => {
         </PageHeader>
         <FamilyPageTable>
         <DataGrid rows={families} columns={columns} getRowId={(row) => row.photoURL} key={row.familia} slots={{ toolbar: GridToolbar }} 
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
     sx={{
         boxShadow: 2,
         border: 2,

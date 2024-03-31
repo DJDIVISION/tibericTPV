@@ -19,9 +19,17 @@ import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+
 //**************CIERRES *********** */
 
 export const CierreCaja = styled(ClosedCaptionIcon)`
+  &&&{
+    color: white;
+  }
+`;
+
+export const ControlCierresIcon = styled(DynamicFeedIcon)`
   &&&{
     color: white;
   }
@@ -62,12 +70,35 @@ export const TableWrapper = styled.div`
   padding: 10px;
 `;
 
+export const TableWrapperTwo = styled.div`
+  width: 90%;
+  height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  margin-top: 50px;
+`;
+
 export const ReportDisplay = styled.div`
-  width: 100%;
+  width: 90%;
   height: 15vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const ReportDisplayColumn = styled.div`
+  width: 90%;
+  height: 20vh;
+  display: flex;
+`;
+
+export const ReportDisplayColumnTwo = styled.div`
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const ReportText = styled.div`
@@ -77,6 +108,21 @@ export const ReportText = styled.div`
   place-items: center;
   color: white;
   font-size: 24px;
+`;
+
+export const ReportColumnText = styled.div`
+  width: 100%;
+  height: 5vh;
+  display: grid;
+  place-items: center;
+  
+  h1{
+    color: #292929;
+    font-size: 24px;
+  }
+  span{
+    color: black;
+  }
 `;
 
 
@@ -352,6 +398,18 @@ export const ArrowDown = styled(IconButton)`
   }
 `;
 
+export const CloseCaption = styled(IconButton)`
+  &&&{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    transform: scale(1.8);
+    color: white;
+    z-index: 9999;
+    outline: none;
+  }
+`;
+
 export const LinkIcon = styled(IconButton)`
     &&&{
         border: 1px solid #a2a2a2;
@@ -602,6 +660,7 @@ width: 100%;
 height: 75px;
 display: flex;
 align-items: center;
+justify-content: center;
 `;
 
 export const SmallMenuHeader = styled.div`
@@ -679,6 +738,16 @@ export const Header = styled.div`
       font-size: 38px;
       color: white;
     }
+`;
+
+export const CierresTitle = styled.div`
+  width: 100%;
+  height: 100px;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 48px;
+  transform: translateY(30px);
 `;
 
 export const IconRow = styled.div`
