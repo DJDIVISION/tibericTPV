@@ -54,7 +54,7 @@ a{
   flex-direction: column;
   z-index: 1000;
   justify-content: center;
-  transform: translate(-5vw, -12vh);
+  transform: translate(-5vw, -120px);
 }
 
 .menu-container-six{

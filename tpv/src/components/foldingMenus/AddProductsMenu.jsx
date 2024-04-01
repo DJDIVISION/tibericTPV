@@ -23,7 +23,7 @@ const AddProductsMenu = ({addProductsMenu, setAddProductsMenu,}) => {
 
   return (
     <motion.div className="menu-container-four" variants={item}
-    initial={{opacity:0, height: 0, x: "25vw", y: "-30px"}}
+    initial={{opacity:0, height: 0, x: "25vw"}}
     animate={{ opacity:1, height: "100vh", x: "25vw"}}
     transition={{duration:.5}}
     exit="exit">

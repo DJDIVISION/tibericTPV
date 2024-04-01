@@ -657,7 +657,7 @@ export const MenuSection = styled.div`
 
 export const MenuHeader = styled.div`
 width: 100%;
-height: 75px;
+height: 120px;
 display: flex;
 align-items: center;
 justify-content: center;

@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx'
 import Families from './pages/Families.jsx'
 import './App.css'
 import Cierres from './pages/Cierres.jsx'
+import Stats from './pages/Stats.jsx'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/families" element={<Families />} />
         <Route path="/cierres" element={<Cierres />} />
+        <Route path="/stats" element={<Stats />} />
       </Routes>
     </Router>
   )

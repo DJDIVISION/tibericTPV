@@ -119,7 +119,8 @@ export default function ProductItem({productProps, productsMenu, setProductsMenu
                     exit={{opacity: 0}}
                     onClick={() => setShowOverlay(!showOverlay)}
                     whileTap={{scale: 0.975}}
-                    //key={product.id}
+                    key={productProps.id}
+                    
                     >
                         <Picture style={{backgroundImage: `url(${productProps.imagen})`, backgroundPosition: "center",
                     backgroundSize: 'cover', backgroundRepeat: "no-repeat"}}></Picture>

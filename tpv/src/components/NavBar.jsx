@@ -6,6 +6,7 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import PollIcon from '@mui/icons-material/Poll';
 
 export default function NavBar() {
 
@@ -39,6 +40,7 @@ export default function NavBar() {
         <Link to="/products"><IconWrapper><NavIcon><LinkIcon><ProductIcon /></LinkIcon></NavIcon><NavText>PRODUCTOS</NavText></IconWrapper></Link>
         <Link to="/families"><IconWrapper><NavIcon><LinkIcon><FamilyIcon /></LinkIcon></NavIcon><NavText>FAMILIAS</NavText></IconWrapper></Link>
         <Link to="/cierres"><IconWrapper><NavIcon><LinkIcon><RegisterIcon /></LinkIcon></NavIcon><NavText>CIERRES</NavText></IconWrapper></Link>
+        <Link to="/stats"><IconWrapper><NavIcon><LinkIcon><StatisticsIcon /></LinkIcon></NavIcon><NavText>ESTADÍSTICAS</NavText></IconWrapper></Link>
     </Nav> 
     {icon}
     </>
@@ -62,6 +64,12 @@ const FamilyIcon = styled(GroupAddIcon)`
 `;
 
 const RegisterIcon = styled(PointOfSaleIcon)`
+    &&&{
+        color: white;
+    }
+`;
+
+const StatisticsIcon = styled(PollIcon)`
     &&&{
         color: white;
     }
