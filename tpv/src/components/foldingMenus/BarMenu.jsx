@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import styled from "styled-components"
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { IconButton } from '@mui/material';
-import {MenuSection, MenuHeader, MenuTitle, MenuTitleTop, item, Times, Popover, Header, IconRow, Cross,
+import {MenuSection, MenuHeader, MenuTitle, MenuTitleTop, item, CloseCaption, Popover, Header, IconRow, Cross,
 Check} from "../index.jsx"
 import { TableState } from '../../context/TableContext.jsx';
 import { db } from "../../components/firebase.jsx";
@@ -194,7 +194,7 @@ const BarMenu = ({setBarMenuOpen, barMenuOpen, productsMenu, setProductsMenu, se
           exit="exit">
             <MenuSection>
             <MenuHeader>
-                <Times onClick={closeMenu}><HighlightOffIcon /></Times>  
+                <CloseCaption onClick={closeMenu}><HighlightOffIcon /></CloseCaption>  
             </MenuHeader>
             <MenuTitleTop>BARRA</MenuTitleTop>
             <MenuTitle>SELECCIONA UNA MESA</MenuTitle>

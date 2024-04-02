@@ -18,10 +18,17 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import ClosedCaptionIcon from '@mui/icons-material/ClosedCaption';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import SettingsIcon from '@mui/icons-material/Settings';
-
+import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 
 //**************CIERRES *********** */
+
+export const MenuSettingsIcon = styled(SettingsSuggestIcon)`
+  &&&{
+    color: white;
+  }
+`;
 
 export const CierreCaja = styled(ClosedCaptionIcon)`
   &&&{
@@ -363,6 +370,18 @@ export const Nav = styled(motion.div)`
     z-index: 8000;
 `;
 
+export const SettingsWrapper = styled(motion.div)`
+    width: 75vw;
+    height: 60px;
+    backdrop-filter: blur(10px);
+    background: rgb(0, 0, 0, 0.2);
+    border-bottom: 1px solid white;
+    display: flex;
+    /* align-items: center;
+    justify-content: space-evenly;
+     */
+`;
+
 export const IconWrapper = styled.div`
 width: 100px;
 height: 90px;
@@ -510,7 +529,7 @@ export const Numbers = styled.div`
     border: 1px solid white;
 `;
 
-export const AddTableIcon = styled(TableBarIcon)`
+export const AddTableIcon = styled(TableRestaurantIcon)`
   &&&{
     color: white;
     transform: scale(1.6);
@@ -653,6 +672,7 @@ export const MenuSection = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  position: relative;
 `;
 
 export const MenuHeader = styled.div`
@@ -668,6 +688,7 @@ width: 100%;
 height: 50px;
 display: flex;
 align-items: center;
+border: 1px solid red;
 `;
 
 export const MenuTitle = styled.div`

@@ -137,3 +137,33 @@ a{
   color: white !important;
 }
 
+.smalltable{
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  cursor: move;
+  border: 0.5px solid goldenrod;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 5px;
+}
+
+.bigtable{
+  width: 150px;
+  height: 100px;
+  position: absolute;
+  cursor: move;
+  border: 0.5px solid goldenrod;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 5px;
+}
+

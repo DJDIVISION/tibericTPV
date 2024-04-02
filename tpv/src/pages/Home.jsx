@@ -30,6 +30,7 @@ import AddProductsMenu from "../components/foldingMenus/AddProductsMenu.jsx";
 import BillMenu from "../components/foldingMenus/BillMenu.jsx";
 import TableSettings from "../components/foldingMenus/TableSettings.jsx";
 import SplitMenu from "../components/foldingMenus/SplitMenu.jsx";
+import RoomMenu from "../components/foldingMenus/RoomMenu.jsx";
 
 
 
@@ -170,6 +171,9 @@ const closeSplit = () => {
       </HomeSection>
         {barMenuOpen && (
           <BarMenu setBarMenuOpen={setBarMenuOpen} barMenuOpen={barMenuOpen} setProductsMenu={setProductsMenu} productsMenu={productsMenu} setActionMenu={setActionMenu} actionMenu={actionMenu} tableSettings={tableSettings} setTableSettings={setTableSettings} splitMenu={splitMenu} setSplitMenu={setSplitMenu} transferTable={transferTable} setTransferTable={setTransferTable} splitTable={splitTable} setSplitTable={setSplitTable}/>
+        )}
+        {roomMenuOpen && (
+          <RoomMenu roomMenuOpen={roomMenuOpen} setRoomMenuOpen={setRoomMenuOpen} />
         )}
         {productsMenu && (
         <ProductsFilter setProductsMenu={setProductsMenu} productsMenu={productsMenu} showOverlay={showOverlay} setShowOverlay={setShowOverlay}/>

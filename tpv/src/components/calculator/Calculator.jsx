@@ -122,8 +122,7 @@ transferTable, setTransferTable, splitTable, setSplitTable, tableSettings, setTa
   return (
     <>
         <Column>
-            <CalculatorIcon><IconButton style={{outline: 'none'}} onClick={setBar}><BarIcon /></IconButton></CalculatorIcon>
-            <CalculatorIcon><IconButton style={{outline: 'none'}} onClick={setRoom}><AddTableIcon /></IconButton></CalculatorIcon>
+            
         </Column>
         <CalculatorWrapper>
             <Display text={text} result={result} />
@@ -147,6 +146,8 @@ transferTable, setTransferTable, splitTable, setSplitTable, tableSettings, setTa
             </Numbers>
         </CalculatorWrapper>
         <CalcIconColumn>
+        <CalculatorIcon><IconButton style={{outline: 'none'}} onClick={setBar}><BarIcon /></IconButton></CalculatorIcon>
+            <CalculatorIcon><IconButton style={{outline: 'none'}} onClick={setRoom}><AddTableIcon /></IconButton></CalculatorIcon>
         <CalculatorIcon><IconButton style={{outline: 'none'}} onClick={setTerrace}><TerraceIcon /></IconButton></CalculatorIcon>
         </CalcIconColumn>
         
