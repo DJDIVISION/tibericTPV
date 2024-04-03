@@ -20,13 +20,24 @@ import Draggable from "react-draggable";
 
 const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
 
-    const [tables, setTables] = useState([]);
-    const [positions, setPositions] = useState({});
+    const [smallTables, setSmallTables] = useState([]);
+    const [bigTables, setBigTables] = useState([]);
+    const [smallPositions, setSmallPositions] = useState({});
+    const [bigPositions, setBigPositions] = useState({});
     const nodeRef = useRef(null);
+    const nodeRef2 = useRef(null);
     const [draggable, setDraggable] = useState(false);
     const [active, setActive] = useState("menuOne");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTableModalOpen, setIsTableModalOpen] = useState(false);
+
+    const showTableModal = () => {
+        setIsTableModalOpen(!isTableModalOpen);
+    };
+
+    const handleTableCancel = () => {
+        showTableModal();
+    };
 
     const Switch = () => {
         if(active === "menuOne"){
@@ -48,14 +59,6 @@ const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
         Switch();
     };
 
-    const showTableModal = () => {
-        setIsTableModalOpen(!isTableModalOpen);
-    };
-
-    const handleTableCancel = () => {
-        showTableModal();
-    };
-
     
 
     let animate = {};
@@ -68,22 +71,26 @@ const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
     };
 
     const getPositions = async () => {
-        const tablesRef = doc(db, "positions", "roomTables");
-        const positionsRef = doc(db, "positions", "roomPositions");
-        const tablesSnap = await getDoc(tablesRef);
-        const positionsSnap = await getDoc(positionsRef);
-        if(tablesSnap.empty){
-            setTables([])
+        const snapshot = await firebase.firestore().collection('positions').get()
+        if(snapshot.empty){
+            setSmallTables([])
+            setBigTables([])
+            setSmallPositions([])
+            setBigPositions([])
         } else {
-            setTables(tablesSnap.data().tables)
+            const smallTablesRef = doc(db, "positions", "roomSmallTables");
+            const bigTablesRef = doc(db, "positions", "roomBigTables");
+            const smallPositionsRef = doc(db, "positions", "roomSmallPositions");
+            const bigPositionsRef = doc(db, "positions", "roomBigPositions");
+            const smallTablesSnap = await getDoc(smallTablesRef);
+            const bigTablesSnap = await getDoc(bigTablesRef);
+            const smallPositionsSnap = await getDoc(smallPositionsRef);
+            const bigPositionsSnap = await getDoc(bigPositionsRef);
+            setSmallTables(smallTablesSnap.data().smallTables)
+            setBigTables(bigTablesSnap.data().bigTables)
+            setSmallPositions(smallPositionsSnap.data())
+            setBigPositions(bigPositionsSnap.data())
         }
-        if(positionsSnap.empty){
-            setPositions([])
-        } else {
-            setPositions(positionsSnap.data())
-        }
-        
-        
     }
 
     useEffect(() => {
@@ -99,44 +106,87 @@ const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
         /* console.log(tables.length);
         const id = tables.length + 1;
         const name = "S" + id;
+        const cl = "smalltable";
         setTables([...tables, name]); */
+        
     }
 
-    const removeDrag = () => {
-        console.log(nodeRef.current.id)
-        //setTables(tables.slice(0, -1));
+    const removeDrag = async () => {
+        /* console.log()
+        console.log(tables)
+        const popped = tables.slice(0, tables.length - 1);
+        await setDoc(doc(db, "positions", "roomTables"), {
+            popped
+        });
+        setTables(popped)
+        console.log(positions)
+        const updatedPositions = { ...positions };
+        const keys = Object.keys(updatedPositions);
+        if (keys.length > 0) {
+            const lastKey = keys[keys.length - 1];
+            delete updatedPositions[lastKey];
+            await setDoc(doc(db, "positions", "roomPositions"), {
+                ...updatedPositions
+            });
+            setPositions(updatedPositions)
+    } */
+        
         
     }
 
     async function handleStop(e, data) {
-        let dummyPositions = { ...positions };
+        let dummyPositions = { ...smallPositions };
         const itemId = e.target.id;
         dummyPositions[itemId] = {};
         dummyPositions[itemId]["x"] = data.x;
         dummyPositions[itemId]["y"] = data.y;
-        setPositions(dummyPositions);
-        await setDoc(doc(db, "positions", "roomPositions"), {
+        setSmallPositions(dummyPositions);
+        await setDoc(doc(db, "positions", "roomSmallPositions"), {
             ...dummyPositions
           });
-        await setDoc(doc(db, "positions", "roomTables"), {
-        tables
+        await setDoc(doc(db, "positions", "roomSmallTables"), {
+        smallTables
         });
     }
 
-    const setSingleTable = () => {
+    async function handleStopTwo(e, data) {
+        let dummyPositions = { ...bigPositions };
+        const itemId = e.target.id;
+        dummyPositions[itemId] = {};
+        dummyPositions[itemId]["x"] = data.x;
+        dummyPositions[itemId]["y"] = data.y;
+        setBigPositions(dummyPositions);
+        await setDoc(doc(db, "positions", "roomBigPositions"), {
+            ...dummyPositions
+          });
+        await setDoc(doc(db, "positions", "roomBigTables"), {
+        bigTables
+        });
+    }
 
+    console.log(smallTables.length);    
+    console.log(bigTables.length);    
+    //console.log(classes);   
+    
+    const setSingleTable = async () => {
+        const i = smallTables.length + bigTables.length
+        const id = i + 1;
+        const name = "S" + id;
+        setSmallTables([...smallTables, name]);
+        showTableModal()
     }
 
     const setDoubleTable = () => {
-
+        const i = smallTables.length + bigTables.length
+        const id = i + 1;
+        const name = "S" + id;
+        setBigTables([...bigTables, name]);
+        showTableModal()
     }
 
     const handleOk= () => {
         
     }
-
-    //console.log(tables);    
-    //console.log(positions);    
 
   return (
     <motion.div className="menu-container-four" variants={item}
@@ -150,16 +200,16 @@ const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
                 <IcButton whileTap={{scale: 0.95}} onClick={() => createDrag()}><img src={TableAddIcon} alt="table" /></IcButton>
                 <IcButtonRight whileTap={{scale: 0.95}} onClick={() => removeDrag()}><img src={TableDeleteIcon} alt="table" /></IcButtonRight>
                 </SettingsWrapper>
-                {tables.length === 0 ? <div></div>
-                : tables.map((el) => {
+                {smallTables.length === 0 ? <div></div>
+                : smallTables.map((el) => {
                     return(
                         <Draggable
                         defaultPosition={
-                            positions === null
+                            smallPositions === null
                               ? { x: 0, y: 0 }
-                              : !positions[el]
+                              : !smallPositions[el]
                               ? { x: 0, y: 0 }
-                              : { x: positions[el].x, y: positions[el].y }
+                              : { x: smallPositions[el].x, y: smallPositions[el].y }
                           }
                         position={null}
                         grid={[25, 25]}
@@ -172,6 +222,31 @@ const RoomMenu = ({setRoomMenuOpen, roomMenuOpen}) => {
                         onStop={handleStop}
                         >
                         <Table ref={nodeRef} id={el} draggable={draggable}>{el}</Table>
+                        </Draggable>
+                    )
+                })}
+                {bigTables.length === 0 ? <div></div>
+                : bigTables.map((el) => {
+                    return(
+                        <Draggable
+                        defaultPosition={
+                            bigPositions === null
+                              ? { x: 0, y: 0 }
+                              : !bigPositions[el]
+                              ? { x: 0, y: 0 }
+                              : { x: bigPositions[el].x, y: bigPositions[el].y }
+                          }
+                        position={null}
+                        grid={[25, 25]}
+                        scale={1}
+                        nodeRef={nodeRef}
+                        key={el}
+                        bounds="parent"
+                        onStart={() => draggable}
+                        //onDrag={this.handleDrag}
+                        onStop={handleStopTwo}
+                        >
+                        <BigTable ref={nodeRef} id={el} draggable={draggable}>{el}</BigTable>
                         </Draggable>
                     )
                 })}
@@ -245,6 +320,20 @@ const IcButtonAbsolute = styled(IconButton)`
 
 const Table = styled.div`
     width: 100px;
+    height: 100px;
+    position: absolute;
+    cursor: ${({ draggable }) => (draggable ? "move" : "pointer")} !important;
+    border: 0.5px solid goldenrod;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 5px;
+`;
+
+const BigTable = styled.div`
+    width: 150px;
     height: 100px;
     position: absolute;
     cursor: ${({ draggable }) => (draggable ? "move" : "pointer")} !important;
